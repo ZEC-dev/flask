@@ -1,18 +1,262 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
+
 <head>
-    <title>{{ title }}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网站顶部边栏</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Awesome IcoCdn CSS -->
+    <link rel="stylesheet" href="https://fastly.jsdelivr.net/gh/ZEC-dev/IcoCdn@main/css/all.min.css">
+
+    <!-- 自定义样式 -->
+    <style>
+        /* 平滑滚动 */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* 导航链接悬停效果 */
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* 移动端菜单动画 */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .mobile-menu {
+            animation: slideDown 0.3s ease-out;
+        }
+
+        /* 搜索框聚焦效果 - 保留样式以防影响其他元素，但已无搜索框 */
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+    </style>
 </head>
-<body>
-    <h1>Hello, {{ name }}!</h1>
-    {% if messages %}
-    <ul>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No messages.</p>
-    {% endif %}
+
+<body class="bg-gray-50">
+    <!-- 顶部边栏 -->
+    <header class="sticky top-0 z-50 w-full bg-white shadow-md">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+
+                <!-- Logo 区域 -->
+                <div class="flex items-center space-x-2">
+                    <a href="/" class="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+                        <i class="icofont-home text-2xl text-blue-600"></i>
+                        <span class="text-xl font-bold text-gray-800">MySite</span>
+                    </a>
+                </div>
+
+                <!-- 桌面导航菜单 -->
+                <nav class="hidden md:flex items-center space-x-6">
+                    <a href="#" class="nav-link text-gray-700 hover:text-blue-600 font-medium">
+                        <i class="icofont-dashboard mr-1"></i>仪表板
+                    </a>
+                    <a href="#" class="nav-link text-gray-700 hover:text-blue-600 font-medium">
+                        <i class="icofont-folder mr-1"></i>项目
+                    </a>
+                    <a href="#" class="nav-link text-gray-700 hover:text-blue-600 font-medium">
+                        <i class="icofont-users-alt-3 mr-1"></i>团队
+                    </a>
+                    <a href="#" class="nav-link text-gray-700 hover:text-blue-600 font-medium">
+                        <i class="icofont-calendar mr-1"></i>日历
+                    </a>
+                    <a href="#" class="nav-link text-gray-700 hover:text-blue-600 font-medium">
+                        <i class="icofont-settings mr-1"></i>设置
+                    </a>
+                </nav>
+
+                <!-- 右侧功能区（已移除桌面搜索框） -->
+                <div class="flex items-center space-x-4">
+
+                    <!-- 用户头像 -->
+                    <div class="relative group">
+                        <button
+                            class="flex items-center space-x-2 p-1 rounded-full hover:bg-gray-100 transition-colors">
+                            <div
+                                class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold">JD</span>
+                                <img src="{url_for()}">
+                            </div>
+                            <i class="icofont-simple-down text-gray-400"></i>
+                        </button>
+
+                        <!-- 用户下拉菜单 -->
+                        <div
+                            class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                            <div class="p-4 border-b border-gray-100">
+                                <p class="font-semibold text-gray-800">John Doe</p>
+                                <p class="text-sm text-gray-500">admin@example.com</p>
+                            </div>
+                            <div class="py-2">
+                                <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="icofont-user mr-3"></i>个人资料
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="icofont-settings mr-3"></i>账户设置
+                                </a>
+                                <a href="#" class="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100">
+                                    <i class="icofont-help-robot mr-3"></i>帮助中心
+                                </a>
+                                <div class="border-t border-gray-100 my-2"></div>
+                                <a href="#" class="flex items-center px-4 py-2 text-red-600 hover:bg-gray-100">
+                                    <i class="icofont-logout mr-3"></i>退出登录
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 移动端菜单按钮 -->
+                    <button id="mobileMenuBtn" class="md:hidden p-2 text-gray-600 hover:text-blue-600">
+                        <i class="icofont-navigation-menu text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 移动端搜索框已移除 -->
+            <!-- 移动端菜单 -->
+            <div id="mobileMenu" class="hidden mobile-menu mt-4 md:hidden border-t border-gray-200 pt-4">
+                <div class="flex flex-col space-y-3">
+                    <a href="#"
+                        class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-gray-50 p-2 rounded-lg">
+                        <i class="icofont-dashboard mr-3"></i>仪表板
+                    </a>
+                    <a href="#"
+                        class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-gray-50 p-2 rounded-lg">
+                        <i class="icofont-folder mr-3"></i>项目
+                    </a>
+                    <a href="#"
+                        class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-gray-50 p-2 rounded-lg">
+                        <i class="icofont-users-alt-3 mr-3"></i>团队
+                    </a>
+                    <a href="#"
+                        class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-gray-50 p-2 rounded-lg">
+                        <i class="icofont-calendar mr-3"></i>日历
+                    </a>
+                    <a href="#"
+                        class="flex items-center text-gray-700 hover:text-blue-600 hover:bg-gray-50 p-2 rounded-lg">
+                        <i class="icofont-settings mr-3"></i>设置
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区域 -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow p-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">欢迎使用顶部边栏</h1>
+            <p class="text-gray-600 mb-6">这是一个响应式的顶部边栏示例，包含完整的桌面端和移动端适配。</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h2 class="font-semibold text-blue-800 mb-2">功能特性</h2>
+                    <ul class="list-disc pl-5 text-blue-700 space-y-1">
+                        <li>响应式设计</li>
+                        <li>Awesome IcoCdn 图标</li>
+                        <li>Tailwind CSS 样式</li>
+                        <li>移动端菜单</li>
+                        <li>用户下拉菜单</li>
+                    </ul>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h2 class="font-semibold text-green-800 mb-2">技术栈</h2>
+                    <ul class="list-disc pl-5 text-green-700 space-y-1">
+                        <li>PHP 代码片段</li>
+                        <li>Tailwind CSS 3.x</li>
+                        <li>Awesome IcoCdn</li>
+                        <li>JavaScript 交互</li>
+                        <li>响应式布局</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Awesome IcoCdn JS -->
+    <script src="https://fastly.jsdelivr.net/gh/ZEC-dev/IcoCdn@main/js/all.min.js"></script>
+
+    <!-- 自定义 JavaScript -->
+    <script>
+        // 移动端菜单切换
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+
+            mobileMenuBtn.addEventListener('click', function () {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // 点击外部关闭用户下拉菜单
+            document.addEventListener('click', function (event) {
+                const userMenu = document.querySelector('.group');
+                if (!userMenu.contains(event.target)) {
+                    const dropdown = userMenu.querySelector('.absolute');
+                    dropdown.classList.remove('opacity-100', 'visible');
+                    dropdown.classList.add('opacity-0', 'invisible');
+                }
+            });
+
+            // 搜索框焦点效果 - 保留但已无搜索框，仅作为示例（不影响现有功能）
+            const searchInputs = document.querySelectorAll('input[type="text"]');
+            searchInputs.forEach(input => {
+                input.addEventListener('focus', function () {
+                    this.parentElement.classList.add('ring-2', 'ring-blue-200');
+                });
+
+                input.addEventListener('blur', function () {
+                    this.parentElement.classList.remove('ring-2', 'ring-blue-200');
+                });
+            });
+        });
+
+        // 页面滚动时添加阴影
+        window.addEventListener('scroll', function () {
+            const header = document.querySelector('header');
+            if (window.scrollY > 10) {
+                header.classList.add('shadow-lg');
+            } else {
+                header.classList.remove('shadow-lg');
+            }
+        });
+    </script>
 </body>
+
 </html>
